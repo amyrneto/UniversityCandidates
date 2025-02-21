@@ -1,4 +1,5 @@
 #pragma once
+#include "AddNewUrlForm.h"
 
 namespace UniversityCandidates {
 
@@ -34,7 +35,14 @@ namespace UniversityCandidates {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ btnTest;
+
+	protected:
+
+
+	private: System::Windows::Forms::MenuStrip^ menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^ configToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ remoteURLsToolStripMenuItem;
+
 	protected:
 
 	protected:
@@ -52,36 +60,63 @@ namespace UniversityCandidates {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->btnTest = (gcnew System::Windows::Forms::Button());
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->configToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->remoteURLsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// btnTest
+			// menuStrip1
 			// 
-			this->btnTest->Location = System::Drawing::Point(64, 107);
-			this->btnTest->Name = L"btnTest";
-			this->btnTest->Size = System::Drawing::Size(75, 23);
-			this->btnTest->TabIndex = 0;
-			this->btnTest->Text = L"Test";
-			this->btnTest->UseVisualStyleBackColor = true;
-			this->btnTest->Click += gcnew System::EventHandler(this, &MainWindow::btnTest_Click);
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->configToolStripMenuItem });
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(823, 24);
+			this->menuStrip1->TabIndex = 3;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// configToolStripMenuItem
+			// 
+			this->configToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->remoteURLsToolStripMenuItem });
+			this->configToolStripMenuItem->Name = L"configToolStripMenuItem";
+			this->configToolStripMenuItem->Size = System::Drawing::Size(55, 20);
+			this->configToolStripMenuItem->Text = L"Config";
+			// 
+			// remoteURLsToolStripMenuItem
+			// 
+			this->remoteURLsToolStripMenuItem->Name = L"remoteURLsToolStripMenuItem";
+			this->remoteURLsToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->remoteURLsToolStripMenuItem->Text = L"Remote URLs";
+			this->remoteURLsToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::remoteURLsToolStripMenuItem_Click);
 			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(823, 571);
-			this->Controls->Add(this->btnTest);
+			this->Controls->Add(this->menuStrip1);
+			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MainWindow";
 			this->Text = L"MainWindow";
 			this->Load += gcnew System::EventHandler(this, &MainWindow::MainWindow_Load);
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-	private: System::Void btnTest_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("Hello World!");
+	private: System::Void btnAddNewUrl_Click(System::Object^ sender, System::EventArgs^ e) {
+
 	}
+	private: System::Void remoteURLsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		AddNewUrlForm^ addUrlWindow = gcnew AddNewUrlForm();
+		addUrlWindow->Show(this);
+	}
+    public: System::Void AddUrl(System::Windows::Forms::ListBox::ObjectCollection^ items) {
+        auto str = items[0]; // Example usage, modify as needed
+    }
 	};
 }
