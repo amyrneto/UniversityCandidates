@@ -1,6 +1,6 @@
 #pragma once
 #include "AddNewUrlForm.h"
-#include "../UniversityApi/UniversityApi.h"
+#include "UniversityApi/UniversityApi.h"
 
 namespace UniversityCandidates {
 

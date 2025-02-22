@@ -140,7 +140,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UniversityApi\UniversityApi.vcxproj">
+    <ProjectReference Include="UniversityApi\UniversityApi.vcxproj">
       <Project>{394c306e-40c4-4e07-9fa7-50750245cd85}</Project>
     </ProjectReference>
   </ItemGroup>

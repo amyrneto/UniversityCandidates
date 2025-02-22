@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\JsonClassTree">
+      <UniqueIdentifier>{da33cd7d-1f3e-4e57-91c0-54e57f98844c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JsonClassTree">
+      <UniqueIdentifier>{ed6a1da9-2568-4d7e-8126-c593be13dde4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UrlManagement">
+      <UniqueIdentifier>{25d9e9c5-e6f9-4307-a698-2f3dc44d558e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UrlManagement">
+      <UniqueIdentifier>{82d80cbe-505b-492f-bc72-b4afa806a454}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniversityApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RootData.h">
+      <Filter>Header Files\JsonClassTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Candidate.h">
+      <Filter>Header Files\JsonClassTree</Filter>
+    </ClInclude>
+    <ClInclude Include="DataContainer.h">
+      <Filter>Header Files\JsonClassTree</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlBasedApi.h">
+      <Filter>Header Files\UrlManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlListSingleton.h">
+      <Filter>Header Files\UrlManagement</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniversityApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Candidate.cpp">
+      <Filter>Source Files\JsonClassTree</Filter>
+    </ClCompile>
+    <ClCompile Include="DataContainer.cpp">
+      <Filter>Source Files\JsonClassTree</Filter>
+    </ClCompile>
+    <ClCompile Include="RootData.cpp">
+      <Filter>Source Files\JsonClassTree</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlListSingleton.cpp">
+      <Filter>Source Files\UrlManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlBasedApi.cpp">
+      <Filter>Source Files\UrlManagement</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

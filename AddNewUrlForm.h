@@ -1,5 +1,5 @@
 #pragma once
-#include "../UniversityApi/UniversityApi.h"
+#include "UniversityApi/UniversityApi.h"
 
 namespace UniversityCandidates {
 
