@@ -1,4 +1,6 @@
 #pragma once
+#include "../UniversityApi/UniversityApi.h"
+
 namespace UniversityCandidates {
 
 	using namespace System;
@@ -28,10 +30,6 @@ namespace UniversityCandidates {
 		/// </summary>
         ~AddNewUrlForm()
         {
-            //MainWindow^ mainWindow = dynamic_cast<MainWindow^>(this->Owner);
-            //if (mainWindow != nullptr) {
-            //    mainWindow->AddUrl(lstBoxUrlCollection->Items);
-            //}
             if (components)
             {
                 delete components;
@@ -73,7 +71,6 @@ namespace UniversityCandidates {
 			this->txtBoxNewUrl->Name = L"txtBoxNewUrl";
 			this->txtBoxNewUrl->Size = System::Drawing::Size(485, 20);
 			this->txtBoxNewUrl->TabIndex = 5;
-			this->txtBoxNewUrl->Text = L"Enter Url";
 			// 
 			// lblNewUrl
 			// 
@@ -142,6 +139,7 @@ namespace UniversityCandidates {
 			this->Controls->Add(this->btnAddNewUrl);
 			this->Name = L"AddNewUrlForm";
 			this->Text = L"AddNewUrlForm";
+			this->Load += gcnew System::EventHandler(this, &AddNewUrlForm::AddNewUrlForm_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -175,6 +173,15 @@ private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^
 }
 private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Close();
+}
+
+private: System::Void AddNewUrlForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	std::vector<std::string> urlList;
+	GetUrlList(&urlList);
+	lstBoxUrlCollection->Items->Clear();
+	for (const auto& url : urlList) {
+		lstBoxUrlCollection->Items->Add(gcnew String(url.c_str()));
+	}
 }
 };
 }
