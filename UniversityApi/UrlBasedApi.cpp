@@ -30,7 +30,7 @@ void UrlBasedApi::RequestDataFromUrl(const std::string &_url)
         data.ParseJsonData(readBuffer);
     }
 	else if (fileType == "xml") {
-        //data.ParseData<xml>(readBuffer);
+        data.ParseXmlData(readBuffer);
     }
 	else {
 		std::cerr << "Unsupported file type: " << fileType << std::endl;
