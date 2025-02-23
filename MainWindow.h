@@ -253,14 +253,27 @@ namespace UniversityCandidates {
 		addUrlWindow->Show(this);
 	}
 	private: System::Void btnDownloadData_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::vector<std::string> urlList;
-		GetUrlList(&urlList);
-		RootData data;
-		for (size_t i = 0; i < urlList.size(); i++)
-		{
-			ReadDataFromUrl(urlList[i]);
+
+		try {
+			bool error = false;
+
+			std::vector<std::string> urlList;
+			GetUrlList(&urlList);
+			RootData data;
+			for (size_t i = 0; i < urlList.size(); i++)
+			{
+				if (!ReadDataFromUrl(urlList[i])) {
+					error = true;
+				}
+			}
+			UpdateSummaryTables();
+			if (error) {
+				MessageBox::Show("Some URLs could not be read", "Error", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
 		}
-		UpdateSummaryTables();
+		catch (Exception^ ex) {
+			MessageBox::Show(ex->Message + "\nFile Corruption error!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	private: System::Void UpdateSummaryTables() {
@@ -316,7 +329,7 @@ namespace UniversityCandidates {
 		dtGrdSkillSummary->Sort(dtGrdSkillSummary->Columns[1], System::ComponentModel::ListSortDirection::Descending);
 	}
 
-	private: System::Void dtGrdDataSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e) {
+	private: System::Void dtGrdDataSummary_SortCompare(System::Object ^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs ^ e) {
 		// Check if the column being sorted is the one with integer values
 		if (e->Column->Name == "NrCandidates") {
 			int intValue1 = Int32::Parse(e->CellValue1->ToString());
@@ -348,7 +361,7 @@ namespace UniversityCandidates {
 		}
 
 	}
-	private: System::Void dtGrdSkillSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e) {
+	private: System::Void dtGrdSkillSummary_SortCompare(System::Object ^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs ^ e) {
 		// Check if the column being sorted is the one with integer values
 		if (e->Column->Name == "Count") {
 			int intValue1 = Int32::Parse(e->CellValue1->ToString());
@@ -365,9 +378,9 @@ namespace UniversityCandidates {
 			e->Handled = true; // Indicate that the event is handled
 		}
 	}
-	private: System::Void btnFullReport_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btnFullReport_Click(System::Object ^ sender, System::EventArgs ^ e) {
 		ReportForm^ reportFormWindow = gcnew ReportForm();
 		reportFormWindow->Show(this);
 	}
-};
-}
+	};
+	}

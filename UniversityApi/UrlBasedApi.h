@@ -12,6 +12,7 @@ public:
 	void RequestData();
 
 	DataParser DataParser;
+	std::string name;
 
 protected:
 	std::string url;

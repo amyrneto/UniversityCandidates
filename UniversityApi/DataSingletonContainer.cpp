@@ -43,13 +43,29 @@ DataSingletonContainer::DataSingletonContainer()
 {
 	data = RootData();
 	skillList = std::vector<std::string>();
+	universityList = std::vector<std::string>();
 }
 
 DataSingletonContainer::~DataSingletonContainer()
 {
 	data.Clear();
 	instance->skillList.clear();
+	instance->universityList.clear();
 }
+
+void DataSingletonContainer::GetUniversityList(std::vector<std::string>* universityList)
+{
+	universityList->clear();
+	*universityList = std::vector<std::string>(instance->universityList);
+}
+
+void DataSingletonContainer::AddUniversityToList(std::string newUniversity)
+{
+	if (std::find(instance->universityList.begin(), instance->universityList.end(), newUniversity) == instance->universityList.end()) {
+		instance->universityList.push_back(newUniversity);
+	}
+}
+
 
 void DataSingletonContainer::UpdateSkillList()
 {

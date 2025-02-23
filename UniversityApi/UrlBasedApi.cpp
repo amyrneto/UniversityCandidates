@@ -24,7 +24,7 @@ void UrlBasedApi::RequestDataFromUrl(const std::string &_url)
 {
 	url = _url;
     auto fileType = url.substr(url.find_last_of(".") + 1);
-    auto name = GetUrlName();
+    name = GetUrlName();
 
     RequestData();
 
@@ -37,6 +37,10 @@ void UrlBasedApi::RequestDataFromUrl(const std::string &_url)
 	else {
 		std::cerr << "Unsupported file type: " << fileType << std::endl;
 	}
+
+	if (DataParser.Data.candidates.size() == 0) {
+		std::cerr << "No data found in the file" << std::endl;
+    }
 }
 
 void UrlBasedApi::RequestData()

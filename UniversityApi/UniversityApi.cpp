@@ -20,11 +20,17 @@ UNIVERSITYAPI_API void RemoveUrl(std::string url)
 	UrlListSingleton::GetInstance()->RemoveUrl(url);
 }
 
-UNIVERSITYAPI_API void ReadDataFromUrl(std::string url)
+UNIVERSITYAPI_API bool ReadDataFromUrl(std::string url)
 {
 	UrlBasedApi api;
 	api.RequestDataFromUrl(url);
-	DataSingletonContainer::GetInstance()->AppendData(api.DataParser.Data);
+	if (api.DataParser.Data.candidates.size() != 0)
+	{
+		DataSingletonContainer::GetInstance()->AppendData(api.DataParser.Data);
+		DataSingletonContainer::GetInstance()->AddUniversityToList(api.name);
+		return true;
+	}
+	return false;
 }
 
 UNIVERSITYAPI_API void GetData(RootData& data)
@@ -35,4 +41,9 @@ UNIVERSITYAPI_API void GetData(RootData& data)
 UNIVERSITYAPI_API void GetSkillList(std::vector<std::string>* skillList)
 {
 	DataSingletonContainer::GetInstance()->GetSkillList(skillList);
+}
+
+UNIVERSITYAPI_API void GetUniversityList(std::vector<std::string>* universityList)
+{
+	DataSingletonContainer::GetInstance()->GetUniversityList(universityList);
 }

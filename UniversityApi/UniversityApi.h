@@ -16,10 +16,12 @@ extern "C" UNIVERSITYAPI_API void AddUrl(std::string url);
 
 extern "C" UNIVERSITYAPI_API void RemoveUrl(std::string url);
 
-extern "C" UNIVERSITYAPI_API void ReadDataFromUrl(std::string url);
+extern "C" UNIVERSITYAPI_API bool ReadDataFromUrl(std::string url);
 
 extern "C" UNIVERSITYAPI_API void GetData(RootData& data);
 
 extern "C" UNIVERSITYAPI_API void GetSkillList(std::vector<std::string>* skillList);
+
+extern "C" UNIVERSITYAPI_API void GetUniversityList(std::vector<std::string>* universityList);
 
 

@@ -9,6 +9,8 @@ public:
 	void GetData(RootData& data);
 	void AppendData(const RootData& data);
 	void GetSkillList(std::vector<std::string>* skillList);
+	void GetUniversityList(std::vector<std::string>* skillList);
+	void AddUniversityToList(std::string newUniversity);
 
 protected:
 	DataSingletonContainer();
@@ -17,5 +19,6 @@ protected:
 	static DataSingletonContainer* instance;
 	RootData data;
 	std::vector<std::string> skillList;
+	std::vector<std::string> universityList;
 };
 
