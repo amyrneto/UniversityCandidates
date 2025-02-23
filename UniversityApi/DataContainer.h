@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <nlohmann/json.hpp>
-#include "pugixml.hpp"
 #include "RootData.h"
 
 using json = nlohmann::json;

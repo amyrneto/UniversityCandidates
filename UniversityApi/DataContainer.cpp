@@ -2,6 +2,7 @@
 #include "DataContainer.h"
 #include <algorithm>
 #include <iostream>
+#include "pugixml.hpp"
 
 void DataContainer::ParseJsonData(std::string data)
 {
