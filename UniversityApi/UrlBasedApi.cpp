@@ -23,14 +23,16 @@ UrlBasedApi::~UrlBasedApi()
 void UrlBasedApi::RequestDataFromUrl(const std::string &_url)
 {
 	url = _url;
-	auto fileType = url.substr(url.find_last_of(".") + 1);
+    auto fileType = url.substr(url.find_last_of(".") + 1);
+    auto name = GetUrlName();
+
     RequestData();
 
     if (fileType == "json") {
-        data.ParseJsonData(readBuffer);
+        DataParser.ParseJsonData(name, readBuffer);
     }
 	else if (fileType == "xml") {
-        data.ParseXmlData(readBuffer);
+        DataParser.ParseXmlData(name, readBuffer);
     }
 	else {
 		std::cerr << "Unsupported file type: " << fileType << std::endl;
@@ -56,4 +58,14 @@ void UrlBasedApi::RequestData()
 
     // Print the JSON string (for demonstration purposes)
     std::cout << "Received JSON: " << readBuffer << std::endl;
+}
+
+std::string UrlBasedApi::GetUrlName()
+{
+    auto dotPos = url.find_last_of(".");
+	auto slashPos = url.find_last_of("/");
+	auto size = dotPos - slashPos - 1;
+    auto name = url.substr(slashPos + 1, size);
+    std::replace(name.begin(), name.end(), '-', ' ');
+	return name;
 }

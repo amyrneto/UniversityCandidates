@@ -27,7 +27,9 @@ UrlListSingleton* UrlListSingleton::GetInstance()
 
 void UrlListSingleton::AddUrl(const std::string& url)
 {
-	instance->urlList.push_back(url);
+	if (std::find(instance->urlList.begin(), instance->urlList.end(), url) == instance->urlList.end()) {
+		instance->urlList.push_back(url);
+	}
 }
 
 void UrlListSingleton::RemoveUrl(const std::string& url)
@@ -42,9 +44,7 @@ void UrlListSingleton::GetUrlList(std::vector<std::string>* _urlList)
 {
 	_urlList->clear();
 
-	for (size_t i = 0; i < instance->urlList.size(); i++)
-	{
-		_urlList->push_back(instance->urlList[i]);
+	for (const auto& url : instance->urlList){
+		_urlList->push_back(url);
 	}
 }
-

@@ -1,6 +1,9 @@
 #pragma once
 #include "AddNewUrlForm.h"
 #include "UniversityApi/UniversityApi.h"
+#include "UniversityApi/ExportedTypes.h"
+#include <map>
+#include "ReportForm.h"
 
 namespace UniversityCandidates {
 
@@ -44,12 +47,24 @@ namespace UniversityCandidates {
 	private: System::Windows::Forms::ToolStripMenuItem^ configToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ remoteURLsToolStripMenuItem;
 	private: System::Windows::Forms::Button^ btnDownloadData;
-	private: System::Windows::Forms::DataGridView^ dataGridView1;
+	private: System::Windows::Forms::DataGridView^ dtGrdDataSummary;
+
+
+
+
+
+	private: System::Windows::Forms::GroupBox^ grpBoxDataSummary;
+	private: System::Windows::Forms::DataGridView^ dtGrdSkillSummary;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ University;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ NrCandidates;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ AvgGpa;
-	private: System::Windows::Forms::ListBox^ listBox1;
-	private: System::Windows::Forms::GroupBox^ grpBoxDataSummary;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Skill;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Count;
+	private: System::Windows::Forms::Button^ btnFullReport;
+
+
+
+
 
 
 
@@ -75,15 +90,19 @@ namespace UniversityCandidates {
 			this->configToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->remoteURLsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->btnDownloadData = (gcnew System::Windows::Forms::Button());
-			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->dtGrdDataSummary = (gcnew System::Windows::Forms::DataGridView());
 			this->University = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->NrCandidates = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->AvgGpa = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
 			this->grpBoxDataSummary = (gcnew System::Windows::Forms::GroupBox());
+			this->dtGrdSkillSummary = (gcnew System::Windows::Forms::DataGridView());
+			this->Skill = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Count = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->btnFullReport = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdDataSummary))->BeginInit();
 			this->grpBoxDataSummary->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdSkillSummary))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -91,7 +110,7 @@ namespace UniversityCandidates {
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->configToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(738, 24);
+			this->menuStrip1->Size = System::Drawing::Size(703, 24);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -119,57 +138,91 @@ namespace UniversityCandidates {
 			this->btnDownloadData->UseVisualStyleBackColor = true;
 			this->btnDownloadData->Click += gcnew System::EventHandler(this, &MainWindow::btnDownloadData_Click);
 			// 
-			// dataGridView1
+			// dtGrdDataSummary
 			// 
-			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
+			this->dtGrdDataSummary->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dtGrdDataSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
 				this->University,
 					this->NrCandidates, this->AvgGpa
 			});
-			this->dataGridView1->Location = System::Drawing::Point(24, 19);
-			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(343, 225);
-			this->dataGridView1->TabIndex = 5;
+			this->dtGrdDataSummary->Location = System::Drawing::Point(24, 19);
+			this->dtGrdDataSummary->Name = L"dtGrdDataSummary";
+			this->dtGrdDataSummary->Size = System::Drawing::Size(398, 225);
+			this->dtGrdDataSummary->TabIndex = 5;
 			// 
 			// University
 			// 
 			this->University->HeaderText = L"University";
+			this->University->MinimumWidth = 200;
 			this->University->Name = L"University";
+			this->University->Width = 200;
 			// 
 			// NrCandidates
 			// 
 			this->NrCandidates->HeaderText = L"# Candidates";
+			this->NrCandidates->MinimumWidth = 50;
 			this->NrCandidates->Name = L"NrCandidates";
+			this->NrCandidates->Width = 50;
 			// 
 			// AvgGpa
 			// 
 			this->AvgGpa->HeaderText = L"Avg. GPA";
+			this->AvgGpa->MinimumWidth = 100;
 			this->AvgGpa->Name = L"AvgGpa";
-			// 
-			// listBox1
-			// 
-			this->listBox1->FormattingEnabled = true;
-			this->listBox1->Location = System::Drawing::Point(374, 19);
-			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(164, 225);
-			this->listBox1->TabIndex = 6;
 			// 
 			// grpBoxDataSummary
 			// 
-			this->grpBoxDataSummary->Controls->Add(this->listBox1);
-			this->grpBoxDataSummary->Controls->Add(this->dataGridView1);
+			this->grpBoxDataSummary->Controls->Add(this->dtGrdSkillSummary);
+			this->grpBoxDataSummary->Controls->Add(this->dtGrdDataSummary);
 			this->grpBoxDataSummary->Location = System::Drawing::Point(12, 93);
 			this->grpBoxDataSummary->Name = L"grpBoxDataSummary";
-			this->grpBoxDataSummary->Size = System::Drawing::Size(572, 254);
+			this->grpBoxDataSummary->Size = System::Drawing::Size(654, 412);
 			this->grpBoxDataSummary->TabIndex = 7;
 			this->grpBoxDataSummary->TabStop = false;
 			this->grpBoxDataSummary->Text = L"Data Summary:";
+			// 
+			// dtGrdSkillSummary
+			// 
+			this->dtGrdSkillSummary->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dtGrdSkillSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
+				this->Skill,
+					this->Count
+			});
+			this->dtGrdSkillSummary->Location = System::Drawing::Point(428, 19);
+			this->dtGrdSkillSummary->Name = L"dtGrdSkillSummary";
+			this->dtGrdSkillSummary->Size = System::Drawing::Size(215, 386);
+			this->dtGrdSkillSummary->TabIndex = 6;
+			// 
+			// Skill
+			// 
+			this->Skill->HeaderText = L"Skill";
+			this->Skill->MinimumWidth = 120;
+			this->Skill->Name = L"Skill";
+			this->Skill->Width = 120;
+			// 
+			// Count
+			// 
+			this->Count->HeaderText = L"Popularity";
+			this->Count->MinimumWidth = 50;
+			this->Count->Name = L"Count";
+			this->Count->Width = 50;
+			// 
+			// btnFullReport
+			// 
+			this->btnFullReport->Location = System::Drawing::Point(141, 43);
+			this->btnFullReport->Name = L"btnFullReport";
+			this->btnFullReport->Size = System::Drawing::Size(134, 35);
+			this->btnFullReport->TabIndex = 8;
+			this->btnFullReport->Text = L"Full Report";
+			this->btnFullReport->UseVisualStyleBackColor = true;
+			this->btnFullReport->Click += gcnew System::EventHandler(this, &MainWindow::btnFullReport_Click);
 			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(738, 571);
+			this->ClientSize = System::Drawing::Size(703, 510);
+			this->Controls->Add(this->btnFullReport);
 			this->Controls->Add(this->grpBoxDataSummary);
 			this->Controls->Add(this->btnDownloadData);
 			this->Controls->Add(this->menuStrip1);
@@ -179,14 +232,18 @@ namespace UniversityCandidates {
 			this->Load += gcnew System::EventHandler(this, &MainWindow::MainWindow_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdDataSummary))->EndInit();
 			this->grpBoxDataSummary->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdSkillSummary))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) {
+		// Attach the SortCompare event handler to the DataGridViews
+		this->dtGrdDataSummary->SortCompare += gcnew System::Windows::Forms::DataGridViewSortCompareEventHandler(this, &MainWindow::dtGrdDataSummary_SortCompare);
+		this->dtGrdSkillSummary->SortCompare += gcnew System::Windows::Forms::DataGridViewSortCompareEventHandler(this, &MainWindow::dtGrdSkillSummary_SortCompare);
 	}
 	private: System::Void btnAddNewUrl_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -198,10 +255,119 @@ namespace UniversityCandidates {
 	private: System::Void btnDownloadData_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::vector<std::string> urlList;
 		GetUrlList(&urlList);
+		RootData data;
 		for (size_t i = 0; i < urlList.size(); i++)
 		{
 			ReadDataFromUrl(urlList[i]);
 		}
+		UpdateSummaryTables();
+	}
+
+	private: System::Void UpdateSummaryTables() {
+		RootData data;
+		GetData(data);
+		dtGrdDataSummary->Rows->Clear();
+		auto university = gcnew String(data.candidates[0].university.c_str());
+		String^ currentUniversity = nullptr;
+		double sumGpa = 0;
+		int count = 0;
+		std::map<std::string, int> skillPopularity;
+		for (size_t i = 0; i < data.candidates.size(); i++)
+		{
+			currentUniversity = gcnew String(data.candidates[i].university.c_str());
+			if (currentUniversity != university) {
+				dtGrdDataSummary->Rows->Add(gcnew array<String^> {
+					university,
+						gcnew String(std::to_string(count).c_str()),
+						gcnew String(std::to_string(sumGpa / count).c_str())
+				});
+				sumGpa = 0;
+				count = 0;
+				university = currentUniversity;
+			}
+			count++;
+			sumGpa += data.candidates[i].gpa;
+
+			for (size_t j = 0; j < data.candidates[i].skills.size(); j++)
+			{
+				auto skill = data.candidates[i].skills[j];
+				if (skillPopularity.find(skill) == skillPopularity.end()) {
+					skillPopularity[skill] = 1;
+				}
+				else {
+					skillPopularity[skill]++;
+				}
+			}
+		}
+		dtGrdDataSummary->Rows->Add(gcnew array<String^> {
+			university,
+				gcnew String(std::to_string(data.candidates.size()).c_str()),
+				gcnew String(std::to_string(sumGpa / count).c_str())
+		});
+
+		dtGrdSkillSummary->Rows->Clear();
+		for (auto it = skillPopularity.begin(); it != skillPopularity.end(); it++)
+		{
+			dtGrdSkillSummary->Rows->Add(gcnew array<String^> {
+				gcnew String(it->first.c_str()),
+					gcnew String(std::to_string(it->second).c_str())
+			});
+		}
+		dtGrdSkillSummary->Sort(dtGrdSkillSummary->Columns[1], System::ComponentModel::ListSortDirection::Descending);
+	}
+
+	private: System::Void dtGrdDataSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e) {
+		// Check if the column being sorted is the one with integer values
+		if (e->Column->Name == "NrCandidates") {
+			int intValue1 = Int32::Parse(e->CellValue1->ToString());
+			int intValue2 = Int32::Parse(e->CellValue2->ToString());
+
+			// Compare the integer values
+			e->SortResult = intValue1.CompareTo(intValue2);
+
+			// If the values are equal, use the row index to maintain the order
+			if (e->SortResult == 0) {
+				e->SortResult = e->RowIndex1.CompareTo(e->RowIndex2);
+			}
+
+			e->Handled = true; // Indicate that the event is handled
+		}
+		else if (e->Column->Name == "AvgGpa") {
+			float floatValue1 = float::Parse(e->CellValue1->ToString());
+			float floatValue2 = float::Parse(e->CellValue2->ToString());
+
+			// Compare the float values
+			e->SortResult = floatValue1.CompareTo(floatValue2);
+
+			// If the values are equal, use the row index to maintain the order
+			if (e->SortResult == 0) {
+				e->SortResult = e->RowIndex1.CompareTo(e->RowIndex2);
+			}
+
+			e->Handled = true; // Indicate that the event is handled
+		}
+
+	}
+	private: System::Void dtGrdSkillSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e) {
+		// Check if the column being sorted is the one with integer values
+		if (e->Column->Name == "Count") {
+			int intValue1 = Int32::Parse(e->CellValue1->ToString());
+			int intValue2 = Int32::Parse(e->CellValue2->ToString());
+
+			// Compare the integer values
+			e->SortResult = intValue1.CompareTo(intValue2);
+
+			// If the values are equal, use the row index to maintain the order
+			if (e->SortResult == 0) {
+				e->SortResult = e->RowIndex1.CompareTo(e->RowIndex2);
+			}
+
+			e->Handled = true; // Indicate that the event is handled
+		}
+	}
+	private: System::Void btnFullReport_Click(System::Object^ sender, System::EventArgs^ e) {
+		ReportForm^ reportFormWindow = gcnew ReportForm();
+		reportFormWindow->Show(this);
 	}
 };
 }

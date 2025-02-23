@@ -1,23 +1,21 @@
 #include "pch.h"
-#include "DataContainer.h"
+#include "DataParser.h"
 #include <algorithm>
 #include <iostream>
 #include "pugixml.hpp"
 
-void DataContainer::ParseJsonData(std::string data)
+void DataParser::ParseJsonData(std::string name, std::string data)
 {
 	try {
-		ParseJsonDataInternal(data);
+		ParseJsonDataInternal(name, data);
 	}
 	catch (const std::exception& e) {
 		throw (e.what());
 	}
 }
 
-void DataContainer::ParseJsonDataInternal(std::string data)
+void DataParser::ParseJsonDataInternal(std::string name, std::string data)
 {
-	allProperties.clear();
-
 	json j = json::parse(data);
 	for (json::iterator it = j.begin(); it != j.end(); ++it) {
 		Candidate candidate;
@@ -27,36 +25,33 @@ void DataContainer::ParseJsonDataInternal(std::string data)
 		candidate.preferred_ide = GetJsonValueOrDefault<std::string>(it.value()["preferred_ide"], "");
 		candidate.certifications = GetJsonValueOrDefault<std::string>(it.value()["certifications"], "");
 		candidate.availability = GetJsonValueOrDefault<std::string>(it.value()["availability"], "");
-		candidate.university = GetJsonValueOrDefault<std::string>(it.value()["university"], "");
+		candidate.university = name;
 		for (json::iterator it2 = it.value()["skills"].begin(); it2 != it.value()["skills"].end(); ++it2) {
 			candidate.skills.push_back(GetJsonValueOrDefault<std::string>(it2.value(), ""));
 		}
 		Data.candidates.push_back(candidate);
-
-		// Iterate over all keys in the current JSON object and add to the set
-		for (json::iterator propIt = it.value().begin(); propIt != it.value().end(); ++propIt) {
-			if (std::find(allProperties.begin(), allProperties.end(), propIt.key()) == allProperties.end()) {
-				allProperties.push_back(propIt.key());
-			}
-		}
 	}
 }
 
 
-void DataContainer::ParseXmlData(std::string data)
+void DataParser::ParseXmlData(std::string name, std::string data)
 {
 	try {
-		ParseXmlDataInternal(data);
+		ParseXmlDataInternal(name, data);
 	}
 	catch (const std::exception& e) {
-		std::cout << "XML parsed with errors, data value: [" << data.c_str() << "]\n";
+		std::cout << "XML parsed with errors, data value: [" << data.c_str() << "]:\n" << e.what() << std::endl;
 	}
 }
 
-
-void DataContainer::ParseXmlDataInternal(std::string data)
+void DataParser::AppendData(const DataParser& other)
 {
-	allProperties.clear();
+	Data.AppendData(other.Data);
+}
+
+
+void DataParser::ParseXmlDataInternal(std::string name, std::string data)
+{
 	auto str = data;
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_string(str.c_str());
@@ -76,24 +71,17 @@ void DataContainer::ParseXmlDataInternal(std::string data)
 		candidate.preferred_ide = item.child("preferred_ide").child_value();
 		candidate.certifications = item.child("certifications").child_value();
 		candidate.availability = item.child("availability").child_value();
-		candidate.university = item.child("university").child_value();
+		candidate.university = name;
 
 		for (pugi::xml_node skill = item.child("skills"); skill; skill = skill.next_sibling("skills")) {
 			candidate.skills.push_back(skill.child_value());
 		}
 		Data.candidates.push_back(candidate);
-
-		// Iterate over all keys in the current JSON object and add to the set
-		for (pugi::xml_node prop = item.first_child(); prop; prop = prop.next_sibling()) {
-			if (std::find(allProperties.begin(), allProperties.end(), prop.name()) == allProperties.end()) {
-				allProperties.push_back(prop.name());
-			}
-		}
 	}
 }
 
 template<typename T>
-T DataContainer::GetJsonValueOrDefault(json j, T defaultValue)
+T DataParser::GetJsonValueOrDefault(json j, T defaultValue)
 {
 	if (j.is_null()) {
 		return defaultValue;
@@ -102,7 +90,7 @@ T DataContainer::GetJsonValueOrDefault(json j, T defaultValue)
 }
 
 template<>
-std::string DataContainer::GetJsonValueOrDefault(json j, std::string defaultValue)
+std::string DataParser::GetJsonValueOrDefault(json j, std::string defaultValue)
 {
 	if (j.is_null()) {
 		return defaultValue;
@@ -110,7 +98,7 @@ std::string DataContainer::GetJsonValueOrDefault(json j, std::string defaultValu
 	return j.get<std::string>();
 }
 template<>
-float DataContainer::GetJsonValueOrDefault(json j, float defaultValue)
+float DataParser::GetJsonValueOrDefault(json j, float defaultValue)
 {
 	if (j.is_null()) {
 		return defaultValue;

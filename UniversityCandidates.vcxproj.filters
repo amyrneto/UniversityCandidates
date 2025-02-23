@@ -21,12 +21,18 @@
     <ClCompile Include="AddNewUrlForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReportForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddNewUrlForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

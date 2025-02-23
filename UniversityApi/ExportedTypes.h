@@ -1,10 +1,9 @@
 #pragma once
-#include <string>
 #include <vector>
+#include <string>
 
-class Candidate
+struct Candidate
 {
-public:
 	std::string name;
 	float gpa;
 	std::vector<std::string> skills;
@@ -15,3 +14,11 @@ public:
 	std::string university;
 };
 
+class RootData
+{
+public:
+	void AppendData(const RootData& other);
+	void Clear();
+
+	std::vector<Candidate> candidates;
+};

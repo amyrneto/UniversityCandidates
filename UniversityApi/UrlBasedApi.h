@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "DataContainer.h"
+#include "DataParser.h"
 
 class UrlBasedApi
 {
@@ -11,9 +11,11 @@ public:
 	void RequestDataFromUrl(const std::string &url);
 	void RequestData();
 
-private:
+	DataParser DataParser;
+
+protected:
 	std::string url;
 	std::string readBuffer;
-	DataContainer data;
+	std::string GetUrlName();
 };
 

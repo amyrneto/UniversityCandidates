@@ -2,6 +2,8 @@
 #include "UniversityApi.h"
 #include "UrlListSingleton.h"
 #include "UrlBasedApi.h"
+#include "DataSingletonContainer.h"
+
 
 void GetUrlList(std::vector<std::string> * urlList) 
 {
@@ -22,5 +24,15 @@ UNIVERSITYAPI_API void ReadDataFromUrl(std::string url)
 {
 	UrlBasedApi api;
 	api.RequestDataFromUrl(url);
-	// @todo: read api.data and return it.
+	DataSingletonContainer::GetInstance()->AppendData(api.DataParser.Data);
+}
+
+UNIVERSITYAPI_API void GetData(RootData& data)
+{
+	DataSingletonContainer::GetInstance()->GetData(data);
+}
+
+UNIVERSITYAPI_API void GetSkillList(std::vector<std::string>* skillList)
+{
+	DataSingletonContainer::GetInstance()->GetSkillList(skillList);
 }

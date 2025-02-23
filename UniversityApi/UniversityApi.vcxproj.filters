@@ -36,13 +36,7 @@
     <ClInclude Include="UniversityApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RootData.h">
-      <Filter>Header Files\JsonClassTree</Filter>
-    </ClInclude>
-    <ClInclude Include="Candidate.h">
-      <Filter>Header Files\JsonClassTree</Filter>
-    </ClInclude>
-    <ClInclude Include="DataContainer.h">
+    <ClInclude Include="DataParser.h">
       <Filter>Header Files\JsonClassTree</Filter>
     </ClInclude>
     <ClInclude Include="UrlBasedApi.h">
@@ -50,6 +44,12 @@
     </ClInclude>
     <ClInclude Include="UrlListSingleton.h">
       <Filter>Header Files\UrlManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportedTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSingletonContainer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,13 +62,7 @@
     <ClCompile Include="UniversityApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Candidate.cpp">
-      <Filter>Source Files\JsonClassTree</Filter>
-    </ClCompile>
-    <ClCompile Include="DataContainer.cpp">
-      <Filter>Source Files\JsonClassTree</Filter>
-    </ClCompile>
-    <ClCompile Include="RootData.cpp">
+    <ClCompile Include="DataParser.cpp">
       <Filter>Source Files\JsonClassTree</Filter>
     </ClCompile>
     <ClCompile Include="UrlListSingleton.cpp">
@@ -76,6 +70,12 @@
     </ClCompile>
     <ClCompile Include="UrlBasedApi.cpp">
       <Filter>Source Files\UrlManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportedTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSingletonContainer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

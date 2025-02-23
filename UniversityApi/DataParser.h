@@ -1,20 +1,22 @@
 #pragma once
 #include <string>
 #include <nlohmann/json.hpp>
-#include "RootData.h"
+#include "ExportedTypes.h"
 
 using json = nlohmann::json;
 
-class DataContainer
+class DataParser
 {
 public:
-	void ParseJsonData(std::string data);
-	void ParseXmlData(std::string data);
-		
+	void ParseJsonData(std::string name, std::string data);
+	void ParseXmlData(std::string name, std::string data);
+	void AppendData(const DataParser& other);
+	RootData Data;
+
 protected:
 
-	void ParseJsonDataInternal(std::string data);
-	void ParseXmlDataInternal(std::string data);
+	void ParseJsonDataInternal(std::string name, std::string data);
+	void ParseXmlDataInternal(std::string name, std::string data);
 
 	template<typename T>
 	T GetJsonValueOrDefault(json j, T defaultValue);
@@ -25,6 +27,4 @@ protected:
 	template<>
 	float GetJsonValueOrDefault<float>(json j, float defaultValue);
 	
-	std::vector<std::string> allProperties;
-	RootData Data;
 };
