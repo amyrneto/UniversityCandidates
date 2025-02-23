@@ -19,7 +19,7 @@ UrlListSingleton* UrlListSingleton::GetInstance()
 		instance = new UrlListSingleton();
 		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University-of-Havana.json");
 		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University-of-Florida.json");
-		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University-of-Florida.json");
+		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/Polytechnic-University-of-Bucharest.xml");
 		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University-of-S%C3%A3o-Paulo.xml");
 	}
 	return instance;
