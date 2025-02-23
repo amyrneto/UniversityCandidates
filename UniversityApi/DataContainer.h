@@ -26,15 +26,6 @@ protected:
 	template<>
 	float GetJsonValueOrDefault<float>(json j, float defaultValue);
 	
-	template<typename T>
-	T GetXmlValueOrDefault(pugi::xml_node j, T defaultValue);
-
-	template<>
-	std::string GetXmlValueOrDefault<std::string>(pugi::xml_node j, std::string defaultValue);
-
-	template<>
-	float GetXmlValueOrDefault<float>(pugi::xml_node j, float defaultValue);
-
 	std::vector<std::string> allProperties;
 	RootData Data;
 };

@@ -76,17 +76,9 @@ void DataContainer::ParseXmlDataInternal(std::string data)
 		candidate.certifications = item.child("certifications").child_value();
 		candidate.availability = item.child("availability").child_value();
 		candidate.university = item.child("university").child_value();
-		//candidate.name = GetXmlValueOrDefault<std::string>(item.child("name").child_value(), "");
-		//candidate.gpa = GetXmlValueOrDefault<float>(item.child("GPA").child_value(), 0.0);
-		//candidate.hobby = GetXmlValueOrDefault<std::string>(item.child("hobby").child_value(), "");
-		//candidate.preferred_ide = GetXmlValueOrDefault<std::string>(item.child("preferred_ide").child_value(), "");
-		//candidate.certifications = GetXmlValueOrDefault<std::string>(item.child("certifications").child_value(), "");
-		//candidate.availability = GetXmlValueOrDefault<std::string>(item.child("availability").child_value(), "");
-		//candidate.university = GetXmlValueOrDefault<std::string>(item.child("university").child_value(), "");
 
 		for (pugi::xml_node skill = item.child("skills"); skill; skill = skill.next_sibling("skills")) {
 			candidate.skills.push_back(skill.child_value());
-			//candidate.skills.push_back(GetXmlValueOrDefault<std::string>(skill.child_value(), ""));
 		}
 		Data.candidates.push_back(candidate);
 
@@ -123,30 +115,4 @@ float DataContainer::GetJsonValueOrDefault(json j, float defaultValue)
 		return defaultValue;
 	}
 	return j.get<float>();
-}
-
-template<typename T>
-T DataContainer::GetXmlValueOrDefault(pugi::xml_node xml, T defaultValue)
-{
-	if (xml.empty()) {
-		return defaultValue;
-	}
-	return (T)xml.text().as_string();
-}
-
-template<>
-std::string DataContainer::GetXmlValueOrDefault(pugi::xml_node xml, std::string defaultValue)
-{
-	if (xml.empty()) {
-		return defaultValue;
-	}
-	return xml.text().as_string();
-}
-template<>
-float DataContainer::GetXmlValueOrDefault(pugi::xml_node xml, float defaultValue)
-{
-	if (xml.empty()) {
-		return defaultValue;
-	}
-	return xml.text().as_float();
 }
