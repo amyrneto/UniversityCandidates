@@ -48,7 +48,7 @@ void DataContainer::ParseXmlData(std::string data)
 		ParseXmlDataInternal(data);
 	}
 	catch (const std::exception& e) {
-		throw (e.what());
+		std::cout << "XML parsed with errors, data value: [" << data.c_str() << "]\n";
 	}
 }
 
@@ -61,9 +61,9 @@ void DataContainer::ParseXmlDataInternal(std::string data)
 	pugi::xml_parse_result result = doc.load_string(str.c_str());
 
 	if (!result) {
-		std::cerr << "XML parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
-		std::cerr << "Error description: " << result.description() << "\n";
-		std::cerr << "Error offset: " << result.offset << " (error at [..." << (data.c_str() + result.offset) << "]\n\n";
+		std::cout << "XML parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
+		std::cout << "Error description: " << result.description() << "\n";
+		std::cout << "Error offset: " << result.offset << " (error at [..." << (data.c_str() + result.offset) << "]\n\n";
 		return;
 	}
 
