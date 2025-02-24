@@ -1,8 +1,11 @@
 #pragma once
 #include "UniversityApi/ExportedTypes.h"
 #include "UniversityApi/UniversityApi.h"
+#include <msclr/marshal_cppstd.h>
+#include <sstream>
 
-namespace UniversityCandidates {
+namespace UniversityCandidates
+{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -31,8 +34,7 @@ namespace UniversityCandidates {
 		/// </summary>
 		~ReportForm()
 		{
-			if (components)
-			{
+			if (components) {
 				delete components;
 			}
 		}
@@ -52,6 +54,9 @@ namespace UniversityCandidates {
 	private: System::Windows::Forms::GroupBox^ grpBoxGpaRange;
 	private: System::Windows::Forms::GroupBox^ grpBoxFilters;
 	private: System::Windows::Forms::Button^ btnApplyFilters;
+	private: System::Windows::Forms::Button^ btnLoadFromsDisk;
+	private: System::Windows::Forms::Button^ btnSaveToDisk;
+
 
 
 
@@ -92,6 +97,8 @@ namespace UniversityCandidates {
 			this->lblMaxGpa = (gcnew System::Windows::Forms::Label());
 			this->grpBoxGpaRange = (gcnew System::Windows::Forms::GroupBox());
 			this->grpBoxFilters = (gcnew System::Windows::Forms::GroupBox());
+			this->btnSaveToDisk = (gcnew System::Windows::Forms::Button());
+			this->btnLoadFromsDisk = (gcnew System::Windows::Forms::Button());
 			this->btnApplyFilters = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdMainReport))->BeginInit();
 			this->grpBoxGpaRange->SuspendLayout();
@@ -101,7 +108,8 @@ namespace UniversityCandidates {
 			// dtGrdMainReport
 			// 
 			this->dtGrdMainReport->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dtGrdMainReport->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(4) {
+			this->dtGrdMainReport->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(4)
+			{
 				this->Name,
 					this->University, this->GPA, this->SkillSet
 			});
@@ -221,6 +229,8 @@ namespace UniversityCandidates {
 			// 
 			// grpBoxFilters
 			// 
+			this->grpBoxFilters->Controls->Add(this->btnSaveToDisk);
+			this->grpBoxFilters->Controls->Add(this->btnLoadFromsDisk);
 			this->grpBoxFilters->Controls->Add(this->btnApplyFilters);
 			this->grpBoxFilters->Controls->Add(this->grpBoxGpaRange);
 			this->grpBoxFilters->Controls->Add(this->lblUniversityFilter);
@@ -234,6 +244,26 @@ namespace UniversityCandidates {
 			this->grpBoxFilters->TabStop = false;
 			this->grpBoxFilters->Text = L"Filters:";
 			// 
+			// btnSaveToDisk
+			// 
+			this->btnSaveToDisk->Location = System::Drawing::Point(387, 62);
+			this->btnSaveToDisk->Name = L"btnSaveToDisk";
+			this->btnSaveToDisk->Size = System::Drawing::Size(104, 37);
+			this->btnSaveToDisk->TabIndex = 13;
+			this->btnSaveToDisk->Text = L"Save Data";
+			this->btnSaveToDisk->UseVisualStyleBackColor = true;
+			this->btnSaveToDisk->Click += gcnew System::EventHandler(this, &ReportForm::btnSaveToDisk_Click);
+			// 
+			// btnLoadFromsDisk
+			// 
+			this->btnLoadFromsDisk->Location = System::Drawing::Point(387, 19);
+			this->btnLoadFromsDisk->Name = L"btnLoadFromsDisk";
+			this->btnLoadFromsDisk->Size = System::Drawing::Size(104, 37);
+			this->btnLoadFromsDisk->TabIndex = 12;
+			this->btnLoadFromsDisk->Text = L"Load Data";
+			this->btnLoadFromsDisk->UseVisualStyleBackColor = true;
+			this->btnLoadFromsDisk->Click += gcnew System::EventHandler(this, &ReportForm::btnLoadFromsDisk_Click);
+			// 
 			// btnApplyFilters
 			// 
 			this->btnApplyFilters->Location = System::Drawing::Point(387, 116);
@@ -242,6 +272,7 @@ namespace UniversityCandidates {
 			this->btnApplyFilters->TabIndex = 11;
 			this->btnApplyFilters->Text = L"Apply Filters";
 			this->btnApplyFilters->UseVisualStyleBackColor = true;
+			this->btnApplyFilters->Click += gcnew System::EventHandler(this, &ReportForm::btnApplyFilters_Click);
 			// 
 			// ReportForm
 			// 
@@ -250,7 +281,7 @@ namespace UniversityCandidates {
 			this->ClientSize = System::Drawing::Size(817, 662);
 			this->Controls->Add(this->grpBoxFilters);
 			this->Controls->Add(this->dtGrdMainReport);
-			this->Name = L"ReportForm";
+			//this->Name = L"ReportForm";
 			this->Text = L"ReportForm";
 			this->Load += gcnew System::EventHandler(this, &ReportForm::ReportForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdMainReport))->EndInit();
@@ -262,32 +293,42 @@ namespace UniversityCandidates {
 
 		}
 #pragma endregion
-	private: System::Void ReportForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void ReportForm_Load(System::Object^ sender, System::EventArgs^ e)
+	{
+		PopulateSkillComboBox();
+		PopulateUniversityComboBox();
+
+		RootData data;
+		GetData(data);
+		UpdateMainGrid(data);
+	}
+
+	private: System::Void PopulateSkillComboBox()
+	{
 		std::vector<std::string> skillList;
 		GetSkillList(&skillList);
-		for (auto it = skillList.begin(); it != skillList.end(); ++it){
+		for (auto it = skillList.begin(); it != skillList.end(); ++it) {
 			cmbBoxSkillList->Items->Add(gcnew String(it->c_str()));
 		}
+	}
+
+	private: System::Void PopulateUniversityComboBox()
+	{
 		std::vector<std::string> universityList;
 		GetUniversityList(&universityList);
 		for (auto it = universityList.begin(); it != universityList.end(); ++it) {
 			cmbBoxUniversityList->Items->Add(gcnew String(it->c_str()));
 		}
-		UpdateMainGrid();
 	}
 
-	private: System::Void UpdateMainGrid() {
-		RootData data;
-		GetData(data);
+	private: System::Void UpdateMainGrid(RootData data)
+	{
 		dtGrdMainReport->Rows->Clear();
-		for (size_t i = 0; i < data.candidates.size(); i++)
-		{
+		for (size_t i = 0; i < data.candidates.size(); i++) {
 			std::string skillSet;
-			for (size_t j = 0; j < data.candidates[i].skills.size(); j++)
-			{
+			for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
 				skillSet += data.candidates[i].skills[j];
-				if (j != data.candidates[i].skills.size() - 1)
-				{
+				if (j != data.candidates[i].skills.size() - 1) {
 					skillSet += " | ";
 				}
 			}
@@ -299,5 +340,95 @@ namespace UniversityCandidates {
 			});
 		}
 	}
+	private: System::Void btnApplyFilters_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		RootData data;
+		GetData(data);
+
+		dtGrdMainReport->Rows->Clear();
+		for (size_t i = 0; i < data.candidates.size(); i++) {
+			std::string selectedSkill = "";
+			std::string selectedUniversity = "";
+			float minGpa = -4;
+			float maxGpa = 4;
+
+			if (cmbBoxSkillList->SelectedItem != nullptr) {
+				selectedSkill = msclr::interop::marshal_as<std::string>(cmbBoxSkillList->SelectedItem->ToString());
+			}
+			if (cmbBoxUniversityList->SelectedItem != nullptr) {
+				selectedUniversity = msclr::interop::marshal_as<std::string>(cmbBoxUniversityList->SelectedItem->ToString());
+			}
+			if (textBox2->Text != "") {
+				minGpa = std::stof(msclr::interop::marshal_as<std::string>(textBox2->Text));
+			}
+			if (textBox1->Text != "") {
+				maxGpa = std::stof(msclr::interop::marshal_as<std::string>(textBox1->Text));
+			}
+
+			if (data.candidates[i].gpa >= minGpa && data.candidates[i].gpa <= maxGpa) {
+				if (selectedSkill == "" || std::find(data.candidates[i].skills.begin(), data.candidates[i].skills.end(), selectedSkill) != data.candidates[i].skills.end()) {
+					if (selectedUniversity == "" || data.candidates[i].university == selectedUniversity) {
+						std::string skillSet;
+						for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
+							skillSet += data.candidates[i].skills[j];
+							if (j != data.candidates[i].skills.size() - 1) {
+								skillSet += " | ";
+							}
+						}
+						dtGrdMainReport->Rows->Add(gcnew array<String^> {
+							gcnew String(data.candidates[i].name.c_str()),
+								gcnew String(data.candidates[i].university.c_str()),
+								gcnew String(std::to_string(data.candidates[i].gpa).c_str()),
+								gcnew String(skillSet.c_str())
+						});
+					}
+				}
+			}
+		}
+	}
+	private: System::Void btnLoadFromsDisk_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		RootData data;
+		OpenFileDialog^ openFileDialog = gcnew OpenFileDialog();
+		openFileDialog->Filter = "JSON files (*.json)|*.json|XML files (*.xml)|*.xml";
+		openFileDialog->FilterIndex = 1;
+		openFileDialog->RestoreDirectory = true;
+		if (openFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+			std::string filePath = msclr::interop::marshal_as<std::string>(openFileDialog->FileName);
+			ReadDataFromFile(filePath, data);
+			UpdateMainGrid(data);
+		}
+	}
+private: System::Void btnSaveToDisk_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	SaveFileDialog^ saveFileDialog = gcnew SaveFileDialog();
+	saveFileDialog->Filter = "JSON files (*.json)|*.json|XML files (*.xml)|*.xml";
+	saveFileDialog->FilterIndex = 1;
+	saveFileDialog->RestoreDirectory = true;
+	if (saveFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		RootData data;
+		for each (DataGridViewRow ^ row in dtGrdMainReport->Rows) {
+			if (row->IsNewRow) continue; // Skip the new row placeholder
+
+			Candidate candidate;
+			candidate.name = msclr::interop::marshal_as<std::string>(row->Cells["Name"]->Value->ToString());
+			candidate.university = msclr::interop::marshal_as<std::string>(row->Cells["University"]->Value->ToString());
+			candidate.gpa = std::stof(msclr::interop::marshal_as<std::string>(row->Cells["GPA"]->Value->ToString()));
+
+			std::string skillSet = msclr::interop::marshal_as<std::string>(row->Cells["SkillSet"]->Value->ToString());
+			std::istringstream skillStream(skillSet);
+			std::string skill;
+			while (std::getline(skillStream, skill, '|')) {
+				skill.erase(skill.find_last_not_of(" \n\r\t") + 1); // Trim trailing whitespace
+				candidate.skills.push_back(skill);
+			}
+
+			data.candidates.push_back(candidate);
+		}
+
+		std::string filePath = msclr::interop::marshal_as<std::string>(saveFileDialog->FileName);
+		WriteDataToFile(filePath, data);
+	}
+}
 };
 }

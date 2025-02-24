@@ -24,4 +24,6 @@ extern "C" UNIVERSITYAPI_API void GetSkillList(std::vector<std::string>* skillLi
 
 extern "C" UNIVERSITYAPI_API void GetUniversityList(std::vector<std::string>* universityList);
 
+extern "C" UNIVERSITYAPI_API void ReadDataFromFile(std::string filename, RootData& data);
 
+extern "C" UNIVERSITYAPI_API void WriteDataToFile(std::string filename, const RootData& data);

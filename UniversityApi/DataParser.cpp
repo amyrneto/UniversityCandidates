@@ -80,6 +80,60 @@ void DataParser::ParseXmlDataInternal(std::string name, std::string data)
 	}
 }
 
+void DataParser::SaveJsonFile(std::string filename, const RootData& data)
+{
+	json j;
+	for (size_t i = 0; i < data.candidates.size(); i++) {
+		json candidate;
+		candidate["name"] = data.candidates[i].name;
+		candidate["GPA"] = data.candidates[i].gpa;
+		candidate["hobby"] = data.candidates[i].hobby;
+		candidate["university"] = data.candidates[i].university;
+		candidate["preferred_ide"] = data.candidates[i].preferred_ide;
+		candidate["certifications"] = data.candidates[i].certifications;
+		candidate["availability"] = data.candidates[i].availability;
+		json skills = json::array();
+		for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
+			skills.push_back(data.candidates[i].skills[j]);
+		}
+		candidate["skills"] = skills;
+		j.push_back(candidate);
+	}
+	
+	auto jsonStr = j.dump(4);
+
+	// Write data to file
+	FILE* file;
+	fopen_s(&file, filename.c_str(), "w");
+	if (file == NULL) {
+		throw std::exception("File not found");
+	}
+	fwrite(jsonStr.c_str(), 1, jsonStr.size(), file);
+	fclose(file);
+}
+
+void DataParser::SaveXmlFile(std::string filename, const RootData& data)
+{
+	pugi::xml_document doc;
+	pugi::xml_node root = doc.append_child("root");
+	for (size_t i = 0; i < data.candidates.size(); i++) {
+		pugi::xml_node candidate = root.append_child("candidate");
+		candidate.append_child("name").text().set(data.candidates[i].name.c_str());
+		candidate.append_child("GPA").text().set(data.candidates[i].gpa);
+		candidate.append_child("hobby").text().set(data.candidates[i].hobby.c_str());
+		candidate.append_child("university").text().set(data.candidates[i].university.c_str());
+		candidate.append_child("preferred_ide").text().set(data.candidates[i].preferred_ide.c_str());
+		candidate.append_child("certifications").text().set(data.candidates[i].certifications.c_str());
+		candidate.append_child("availability").text().set(data.candidates[i].availability.c_str());
+		pugi::xml_node skills = candidate.append_child("skills");
+		for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
+			skills.append_child("skill").text().set(data.candidates[i].skills[j].c_str());
+		}
+	}
+
+	doc.save_file(filename.c_str());
+}
+
 template<typename T>
 T DataParser::GetJsonValueOrDefault(json j, T defaultValue)
 {
