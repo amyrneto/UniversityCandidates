@@ -83,12 +83,11 @@ void UrlBasedApi::ReadDataFromFile(const std::string& filename, RootData& data)
 
 	// Parse data
 	auto fileType = filename.substr(filename.find_last_of(".") + 1);
-	name = GetUrlName(filename);
 	if (fileType == "json") {
-		DataParser.ParseJsonData(name, buffer);
+		DataParser.ParseJsonData("", buffer);
 	}
 	else if (fileType == "xml") {
-		DataParser.ParseXmlData(name, buffer);
+		DataParser.ParseXmlData("", buffer);
 	}
 	else {
 		std::cerr << "Unsupported file type: " << fileType << std::endl;

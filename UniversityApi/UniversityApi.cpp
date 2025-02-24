@@ -3,6 +3,7 @@
 #include "UrlListSingleton.h"
 #include "UrlBasedApi.h"
 #include "DataSingletonContainer.h"
+#include "ErrorLogSingleton.h"
 
 
 UNIVERSITYAPI_API void GetUrlList(std::vector<std::string> * urlList)
@@ -69,4 +70,9 @@ UNIVERSITYAPI_API void WriteDataToFile(std::string filename, const RootData& dat
 {
 	UrlBasedApi api;
 	api.WriteDataToFile(filename, data);
+}
+
+UNIVERSITYAPI_API void LogError(std::string msg)
+{
+	ErrorLogSingleton::GetInstance()->LogError(msg);
 }

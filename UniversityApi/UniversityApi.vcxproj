@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="DataParser.h" />
     <ClInclude Include="DataSingletonContainer.h" />
+    <ClInclude Include="ErrorLogSingleton.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ExportedTypes.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="DataParser.cpp" />
     <ClCompile Include="DataSingletonContainer.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ErrorLogSingleton.cpp" />
     <ClCompile Include="ExportedTypes.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

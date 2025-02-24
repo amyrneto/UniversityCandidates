@@ -301,7 +301,9 @@ namespace UniversityCandidates
 		UpdateSummaryTables(*(managedData->nativeRootData));
 
 		if (error) {
-			MessageBox::Show("Some URLs could not be read", "Error", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			std::string msg = "Some URLs could not be read";
+			LogError(msg);
+			MessageBox::Show(gcnew String(msg.c_str()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		}
 
 		// Re-enable the button
@@ -310,9 +312,10 @@ namespace UniversityCandidates
 
 	private: System::Void ShowError(String^ message)
 	{
+		LogError(msclr::interop::marshal_as<std::string>(message));
 		MessageBox::Show(message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
-		// Re-enable the button
+		// Re-enable the button  
 		btnDownloadData->Enabled = true;
 	}
 	private: System::Void UpdateSummaryTables(const RootData& data)

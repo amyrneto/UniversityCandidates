@@ -32,3 +32,6 @@ extern "C" UNIVERSITYAPI_API void GetUniversityList(std::map<std::string, float>
 extern "C" UNIVERSITYAPI_API void ReadDataFromFile(std::string filename, RootData& data);
 
 extern "C" UNIVERSITYAPI_API void WriteDataToFile(std::string filename, const RootData& data);
+
+extern "C" UNIVERSITYAPI_API void LogError(std::string msg);
+

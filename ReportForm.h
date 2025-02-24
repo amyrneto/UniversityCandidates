@@ -379,7 +379,9 @@ namespace UniversityCandidates
 			cmbBoxSkillList->Items->Remove(cmbBoxSkillList->SelectedItem);
 		}
 		else {
-			MessageBox::Show("You can only select up to 3 skills for filtering", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			std::string msg = "You can only select up to 3 skills for filtering";
+			LogError(msg);
+            MessageBox::Show(gcnew String(msg.c_str()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
@@ -433,7 +435,7 @@ namespace UniversityCandidates
 			float minGpa = -4;
 			float maxGpa = 4;
 			std::vector<std::string> requiredSkills;
-			int matchingSkills = 0;
+			int matchingSkillsScore = 0;
 
 			if (lstBoxSkillSetFilter->Items->Count > 0) {
 				for each (String ^ skill in lstBoxSkillSetFilter->Items) {
@@ -453,25 +455,31 @@ namespace UniversityCandidates
 			if (data.candidates[i].gpa >= minGpa && data.candidates[i].gpa <= maxGpa) {
 				if (selectedUniversity == "" || data.candidates[i].university == selectedUniversity) {
 					std::string skillSet;
-					
+
 					bool match = requiredSkills.size() == 0;
 					for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
 						skillSet += data.candidates[i].skills[j];
 						if (j != data.candidates[i].skills.size() - 1) {
 							skillSet += " | ";
 						}
-						if (std::find(requiredSkills.begin(), requiredSkills.end(), data.candidates[i].skills[j]) != requiredSkills.end()) {
-							match = true;
-							matchingSkills++;
+						for (size_t k = 0; k < requiredSkills.size(); k++) {
+							if (data.candidates[i].skills[j] == requiredSkills[k]) {
+								match = true;
+								//matchingSkillsScore += (requiredSkills.size() - k);
+								matchingSkillsScore++;
+							}
 						}
 					}
 					if (match) {
+						float score = matchingSkillsScore + data.candidates[i].weighted_gpa;
+
 						dtGrdMainReport->Rows->Add(gcnew array<String^> {
 							gcnew String(data.candidates[i].name.c_str()),
 								gcnew String(data.candidates[i].university.c_str()),
 								gcnew String(std::to_string(data.candidates[i].gpa).c_str()),
+								gcnew String(std::to_string(data.candidates[i].weighted_gpa).c_str()),
 								gcnew String(skillSet.c_str()),
-								gcnew String(std::to_string(matchingSkills).c_str())
+								gcnew String(std::to_string(score).c_str())
 						});
 					}
 				}

@@ -122,7 +122,7 @@ namespace UniversityCandidates
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(84, 20);
 			this->btnClose->TabIndex = 8;
-			this->btnClose->Text = L"Close";
+			this->btnClose->Text = L"Ok";
 			this->btnClose->UseVisualStyleBackColor = true;
 			this->btnClose->Click += gcnew System::EventHandler(this, &AddNewUrlForm::btnClose_Click);
 			// 

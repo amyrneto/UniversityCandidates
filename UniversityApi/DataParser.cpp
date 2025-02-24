@@ -28,7 +28,7 @@ void DataParser::ParseJsonDataInternal(std::string name, std::string data)
 		candidate.preferred_ide = GetJsonValueOrDefault<std::string>(it.value()["preferred_ide"], "");
 		candidate.certifications = GetJsonValueOrDefault<std::string>(it.value()["certifications"], "");
 		candidate.availability = GetJsonValueOrDefault<std::string>(it.value()["availability"], "");
-		candidate.university = name;
+		candidate.university = name == "" ? GetJsonValueOrDefault<std::string>(it.value()["university"], "") : name;
 		for (json::iterator it2 = it.value()["skills"].begin(); it2 != it.value()["skills"].end(); ++it2) {
 			candidate.skills.push_back(GetJsonValueOrDefault<std::string>(it2.value(), ""));
 		}
@@ -76,7 +76,7 @@ void DataParser::ParseXmlDataInternal(std::string name, std::string data)
 		candidate.preferred_ide = item.child("preferred_ide").child_value();
 		candidate.certifications = item.child("certifications").child_value();
 		candidate.availability = item.child("availability").child_value();
-		candidate.university = name;
+		candidate.university = name == "" ? item.child("university").child_value() : name;
 
 		for (pugi::xml_node skill = item.child("skills"); skill; skill = skill.next_sibling("skills")) {
 			candidate.skills.push_back(skill.child_value());
