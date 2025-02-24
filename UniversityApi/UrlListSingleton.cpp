@@ -20,6 +20,8 @@ UrlListSingleton* UrlListSingleton::GetInstance()
 {
 	if (instance == nullptr) {
 		instance = new UrlListSingleton();
+		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/Polytechnic-University-of-Bucharest.xml", 1);
+		instance->AddUrl("https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University-of-Havana.json", 1);
 	}
 	return instance;
 }

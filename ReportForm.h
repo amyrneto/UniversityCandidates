@@ -428,30 +428,34 @@ namespace UniversityCandidates
 		RootData data;
 		GetData(data);
 
+		std::string selectedSkill = "";
+		std::string selectedUniversity = "";
+		float minGpa = -4;
+		float maxGpa = 4;
+		std::vector<std::string> requiredSkills;
+		int matchingSkillsScore = 0;
+
+		if (lstBoxSkillSetFilter->Items->Count > 0) {
+			for each (String ^ skill in lstBoxSkillSetFilter->Items) {
+				requiredSkills.push_back(msclr::interop::marshal_as<std::string>(skill));
+			}
+		}
+		if (cmbBoxUniversityList->SelectedItem != nullptr) {
+			selectedUniversity = msclr::interop::marshal_as<std::string>(cmbBoxUniversityList->SelectedItem->ToString());
+		}
+		if (textBox2->Text != "") {
+			auto str = msclr::interop::marshal_as<std::string>(textBox2->Text);
+			std::replace(str.begin(), str.end(), ',', '.');
+			minGpa = std::stof(str);
+		}
+		if (textBox1->Text != "") {
+			auto str = msclr::interop::marshal_as<std::string>(textBox1->Text);
+			std::replace(str.begin(), str.end(), ',', '.');
+			maxGpa = std::stof(msclr::interop::marshal_as<std::string>(textBox1->Text));
+		}
+
 		dtGrdMainReport->Rows->Clear();
 		for (size_t i = 0; i < data.candidates.size(); i++) {
-			std::string selectedSkill = "";
-			std::string selectedUniversity = "";
-			float minGpa = -4;
-			float maxGpa = 4;
-			std::vector<std::string> requiredSkills;
-			int matchingSkillsScore = 0;
-
-			if (lstBoxSkillSetFilter->Items->Count > 0) {
-				for each (String ^ skill in lstBoxSkillSetFilter->Items) {
-					requiredSkills.push_back(msclr::interop::marshal_as<std::string>(skill));
-				}
-			}
-			if (cmbBoxUniversityList->SelectedItem != nullptr) {
-				selectedUniversity = msclr::interop::marshal_as<std::string>(cmbBoxUniversityList->SelectedItem->ToString());
-			}
-			if (textBox2->Text != "") {
-				minGpa = std::stof(msclr::interop::marshal_as<std::string>(textBox2->Text));
-			}
-			if (textBox1->Text != "") {
-				maxGpa = std::stof(msclr::interop::marshal_as<std::string>(textBox1->Text));
-			}
-
 			if (data.candidates[i].gpa >= minGpa && data.candidates[i].gpa <= maxGpa) {
 				if (selectedUniversity == "" || data.candidates[i].university == selectedUniversity) {
 					std::string skillSet;
