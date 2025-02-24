@@ -61,12 +61,19 @@ LogError("An error occurred while processing data.");
 ### Project Structure
 
 •	UniversityApi/UniversityApi.cpp: Main API functions
+
 •	UniversityApi/UrlListSingleton.cpp: Manages the list of URLs
+
 •	UniversityApi/DataSingletonContainer.cpp: Manages the data container
+
 •	UniversityApi/ErrorLogSingleton.cpp: Manages error logging
+
 •	UniversityApi/DataParser.cpp: Parses JSON and XML data
+
 •	MainWindow.h: Main application window
+
 •	ReportForm.h: Report generation form
+
 •	AddNewUrlForm.h: Form to add new URLs
 
 ### Contributing
