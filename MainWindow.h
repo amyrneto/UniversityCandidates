@@ -4,8 +4,13 @@
 #include "UniversityApi/ExportedTypes.h"
 #include <map>
 #include "ReportForm.h"
+#include <msclr/marshal_cppstd.h>
+#include <thread>
+#include <future>
+#include "ManagedRootData.h"
 
-namespace UniversityCandidates {
+namespace UniversityCandidates
+{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -34,8 +39,7 @@ namespace UniversityCandidates {
 		/// </summary>
 		~MainWindow()
 		{
-			if (components)
-			{
+			if (components) {
 				delete components;
 			}
 		}
@@ -141,7 +145,8 @@ namespace UniversityCandidates {
 			// dtGrdDataSummary
 			// 
 			this->dtGrdDataSummary->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dtGrdDataSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3) {
+			this->dtGrdDataSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(3)
+			{
 				this->University,
 					this->NrCandidates, this->AvgGpa
 			});
@@ -184,7 +189,8 @@ namespace UniversityCandidates {
 			// dtGrdSkillSummary
 			// 
 			this->dtGrdSkillSummary->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dtGrdSkillSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
+			this->dtGrdSkillSummary->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2)
+			{
 				this->Skill,
 					this->Count
 			});
@@ -240,53 +246,77 @@ namespace UniversityCandidates {
 
 		}
 #pragma endregion
-	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e)
+	{
 		// Attach the SortCompare event handler to the DataGridViews
 		this->dtGrdDataSummary->SortCompare += gcnew System::Windows::Forms::DataGridViewSortCompareEventHandler(this, &MainWindow::dtGrdDataSummary_SortCompare);
 		this->dtGrdSkillSummary->SortCompare += gcnew System::Windows::Forms::DataGridViewSortCompareEventHandler(this, &MainWindow::dtGrdSkillSummary_SortCompare);
 	}
-	private: System::Void btnAddNewUrl_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	}
-	private: System::Void remoteURLsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void remoteURLsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+	{
 		AddNewUrlForm^ addUrlWindow = gcnew AddNewUrlForm();
 		addUrlWindow->Show(this);
 	}
-	private: System::Void btnDownloadData_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btnDownloadData_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		btnDownloadData->Enabled = false;
+		auto task = System::Threading::Tasks::Task::Run(gcnew System::Action(this, &MainWindow::DownloadDataAsync));
+	}
 
+	private: System::Void DownloadDataAsync()
+	{
 		try {
 			bool error = false;
 
 			std::vector<std::string> urlList;
 			GetUrlList(&urlList);
-			RootData data;
-			for (size_t i = 0; i < urlList.size(); i++)
-			{
+			for (size_t i = 0; i < urlList.size(); i++) {
 				if (!ReadDataFromUrl(urlList[i])) {
 					error = true;
 				}
 			}
-			UpdateSummaryTables();
-			if (error) {
-				MessageBox::Show("Some URLs could not be read", "Error", MessageBoxButtons::OK, MessageBoxIcon::Warning);
-			}
+			RootData data;
+			GetData(data);
+
+			// Update the UI on the main thread
+			this->Invoke(gcnew System::Action<System::Tuple<ManagedRootData^, bool>^>(this, &MainWindow::UpdateUI), gcnew System::Tuple<ManagedRootData^, bool>(gcnew ManagedRootData(data), error));
 		}
 		catch (Exception^ ex) {
-			MessageBox::Show(ex->Message + "\nFile Corruption error!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			this->Invoke(gcnew System::Action<String^>(this, &MainWindow::ShowError), ex->Message + "\nFile Corruption error!");
 		}
 	}
 
-	private: System::Void UpdateSummaryTables() {
-		RootData data;
-		GetData(data);
+	private: System::Void UpdateUI(System::Tuple<ManagedRootData^, bool>^ dataAndError)
+	{
+		ManagedRootData^ managedData = dataAndError->Item1;
+		bool error = dataAndError->Item2;
+
+		UpdateSummaryTables(*(managedData->nativeRootData));
+
+		if (error) {
+			MessageBox::Show("Some URLs could not be read", "Error", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+		}
+
+		// Re-enable the button
+		btnDownloadData->Enabled = true;
+	}
+
+	private: System::Void ShowError(String^ message)
+	{
+		MessageBox::Show(message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+
+		// Re-enable the button
+		btnDownloadData->Enabled = true;
+	}
+	private: System::Void UpdateSummaryTables(const RootData& data)
+	{
 		dtGrdDataSummary->Rows->Clear();
 		auto university = gcnew String(data.candidates[0].university.c_str());
 		String^ currentUniversity = nullptr;
 		double sumGpa = 0;
 		int count = 0;
 		std::map<std::string, int> skillPopularity;
-		for (size_t i = 0; i < data.candidates.size(); i++)
-		{
+		for (size_t i = 0; i < data.candidates.size(); i++) {
 			currentUniversity = gcnew String(data.candidates[i].university.c_str());
 			if (currentUniversity != university) {
 				dtGrdDataSummary->Rows->Add(gcnew array<String^> {
@@ -301,8 +331,7 @@ namespace UniversityCandidates {
 			count++;
 			sumGpa += data.candidates[i].gpa;
 
-			for (size_t j = 0; j < data.candidates[i].skills.size(); j++)
-			{
+			for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
 				auto skill = data.candidates[i].skills[j];
 				if (skillPopularity.find(skill) == skillPopularity.end()) {
 					skillPopularity[skill] = 1;
@@ -319,8 +348,7 @@ namespace UniversityCandidates {
 		});
 
 		dtGrdSkillSummary->Rows->Clear();
-		for (auto it = skillPopularity.begin(); it != skillPopularity.end(); it++)
-		{
+		for (auto it = skillPopularity.begin(); it != skillPopularity.end(); it++) {
 			dtGrdSkillSummary->Rows->Add(gcnew array<String^> {
 				gcnew String(it->first.c_str()),
 					gcnew String(std::to_string(it->second).c_str())
@@ -329,7 +357,8 @@ namespace UniversityCandidates {
 		dtGrdSkillSummary->Sort(dtGrdSkillSummary->Columns[1], System::ComponentModel::ListSortDirection::Descending);
 	}
 
-	private: System::Void dtGrdDataSummary_SortCompare(System::Object ^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs ^ e) {
+	private: System::Void dtGrdDataSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e)
+	{
 		// Check if the column being sorted is the one with integer values
 		if (e->Column->Name == "NrCandidates") {
 			int intValue1 = Int32::Parse(e->CellValue1->ToString());
@@ -361,7 +390,8 @@ namespace UniversityCandidates {
 		}
 
 	}
-	private: System::Void dtGrdSkillSummary_SortCompare(System::Object ^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs ^ e) {
+	private: System::Void dtGrdSkillSummary_SortCompare(System::Object^ sender, System::Windows::Forms::DataGridViewSortCompareEventArgs^ e)
+	{
 		// Check if the column being sorted is the one with integer values
 		if (e->Column->Name == "Count") {
 			int intValue1 = Int32::Parse(e->CellValue1->ToString());
@@ -378,9 +408,10 @@ namespace UniversityCandidates {
 			e->Handled = true; // Indicate that the event is handled
 		}
 	}
-	private: System::Void btnFullReport_Click(System::Object ^ sender, System::EventArgs ^ e) {
+	private: System::Void btnFullReport_Click(System::Object^ sender, System::EventArgs^ e)
+	{
 		ReportForm^ reportFormWindow = gcnew ReportForm();
 		reportFormWindow->Show(this);
 	}
 	};
-	}
+}

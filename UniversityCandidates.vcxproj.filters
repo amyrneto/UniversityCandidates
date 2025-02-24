@@ -35,5 +35,8 @@
     <ClInclude Include="ReportForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ManagedRootData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

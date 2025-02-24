@@ -131,6 +131,7 @@
     <ClInclude Include="MainWindow.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="ManagedRootData.h" />
     <ClInclude Include="ReportForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
