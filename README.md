@@ -19,3 +19,8 @@ The University Candidates API is a C++ project designed to manage and process da
    '''
 3.	Install Dependencies
 Use vcpkg to install the required libraries for JSON and XML serialization.
+'''
+vcpkg install nlohmann-json
+vcpkg install pugixml
+'''
+
