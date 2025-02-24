@@ -59,6 +59,7 @@ To log an error message, use the LogError function:
 LogError("An error occurred while processing data.");
 ```
 ### Project Structure
+
 •	UniversityApi/UniversityApi.cpp: Main API functions
 •	UniversityApi/UrlListSingleton.cpp: Manages the list of URLs
 •	UniversityApi/DataSingletonContainer.cpp: Manages the data container
@@ -67,6 +68,7 @@ LogError("An error occurred while processing data.");
 •	MainWindow.h: Main application window
 •	ReportForm.h: Report generation form
 •	AddNewUrlForm.h: Form to add new URLs
+
 ### Contributing
 Contributions are welcome! Please fork the repository and submit pull requests for any improvements or bug fixes.
 ### License
