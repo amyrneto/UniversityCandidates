@@ -373,6 +373,8 @@ namespace UniversityCandidates
 
 	private: System::Void cmbBoxSkillList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 	{
+		if (cmbBoxSkillList->SelectedItem == nullptr) return;
+
 		std::string selectedSkill = msclr::interop::marshal_as<std::string>(cmbBoxSkillList->SelectedItem->ToString());
 		if (lstBoxSkillSetFilter->Items->Count < 3) {
 			lstBoxSkillSetFilter->Items->Add(gcnew String(selectedSkill.c_str()));
