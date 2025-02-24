@@ -101,7 +101,6 @@ void DataParser::SaveJsonFile(std::string filename, const RootData& data)
 	}
 	
 	auto jsonStr = j.dump(4);
-
 	// Write data to file
 	FILE* file;
 	fopen_s(&file, filename.c_str(), "w");
@@ -125,9 +124,8 @@ void DataParser::SaveXmlFile(std::string filename, const RootData& data)
 		candidate.append_child("preferred_ide").text().set(data.candidates[i].preferred_ide.c_str());
 		candidate.append_child("certifications").text().set(data.candidates[i].certifications.c_str());
 		candidate.append_child("availability").text().set(data.candidates[i].availability.c_str());
-		pugi::xml_node skills = candidate.append_child("skills");
 		for (size_t j = 0; j < data.candidates[i].skills.size(); j++) {
-			skills.append_child("skill").text().set(data.candidates[i].skills[j].c_str());
+			candidate.append_child("skills").text().set(data.candidates[i].skills[j].c_str());
 		}
 	}
 
