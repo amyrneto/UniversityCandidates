@@ -33,6 +33,13 @@ void DataSingletonContainer::AppendData(const RootData& data)
 	instance->UpdateSkillList();
 }
 
+void DataSingletonContainer::ClearData()
+{
+	instance->data.Clear();
+	instance->skillList.clear();
+	instance->universityList.clear();
+}
+
 void DataSingletonContainer::GetSkillList(std::vector<std::string>* skillList)
 {
 	skillList->clear();
@@ -43,7 +50,7 @@ DataSingletonContainer::DataSingletonContainer()
 {
 	data = RootData();
 	skillList = std::vector<std::string>();
-	universityList = std::vector<std::string>();
+	universityList = std::map<std::string, float>();
 }
 
 DataSingletonContainer::~DataSingletonContainer()
@@ -53,17 +60,15 @@ DataSingletonContainer::~DataSingletonContainer()
 	instance->universityList.clear();
 }
 
-void DataSingletonContainer::GetUniversityList(std::vector<std::string>* universityList)
+void DataSingletonContainer::GetUniversityList(std::map<std::string, float>* universityList)
 {
 	universityList->clear();
-	*universityList = std::vector<std::string>(instance->universityList);
+	*universityList = std::map<std::string, float>(instance->universityList);
 }
 
-void DataSingletonContainer::AddUniversityToList(std::string newUniversity)
+void DataSingletonContainer::AddUniversityToList(std::string newUniversity, float weight)
 {
-	if (std::find(instance->universityList.begin(), instance->universityList.end(), newUniversity) == instance->universityList.end()) {
-		instance->universityList.push_back(newUniversity);
-	}
+	instance->universityList[newUniversity] = weight;
 }
 
 

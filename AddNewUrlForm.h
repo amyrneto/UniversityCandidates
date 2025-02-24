@@ -1,7 +1,9 @@
 #pragma once
 #include "UniversityApi/UniversityApi.h"
+#include <msclr/marshal_cppstd.h>
 
-namespace UniversityCandidates {
+namespace UniversityCandidates
+{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -28,27 +30,34 @@ namespace UniversityCandidates {
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-        ~AddNewUrlForm()
-        {
-            if (components)
-            {
-                delete components;
-            }
-        }
+		~AddNewUrlForm()
+		{
+			if (components) {
+				delete components;
+			}
+		}
 	private: System::Windows::Forms::TextBox^ txtBoxNewUrl;
 	protected:
 	private: System::Windows::Forms::Label^ lblNewUrl;
 	private: System::Windows::Forms::Button^ btnAddNewUrl;
-	private: System::Windows::Forms::ListBox^ lstBoxUrlCollection;
+
 
 	private: System::Windows::Forms::Button^ btnRemove;
 	private: System::Windows::Forms::Button^ btnClose;
+	private: System::Windows::Forms::TextBox^ txtBoxWeight;
+	private: System::Windows::Forms::Label^ lblWeight;
+	private: System::Windows::Forms::DataGridView^ dtGrdUrlCollection;
+
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ URL;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Weight;
+
+
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -60,16 +69,21 @@ namespace UniversityCandidates {
 			this->txtBoxNewUrl = (gcnew System::Windows::Forms::TextBox());
 			this->lblNewUrl = (gcnew System::Windows::Forms::Label());
 			this->btnAddNewUrl = (gcnew System::Windows::Forms::Button());
-			this->lstBoxUrlCollection = (gcnew System::Windows::Forms::ListBox());
 			this->btnRemove = (gcnew System::Windows::Forms::Button());
 			this->btnClose = (gcnew System::Windows::Forms::Button());
+			this->txtBoxWeight = (gcnew System::Windows::Forms::TextBox());
+			this->lblWeight = (gcnew System::Windows::Forms::Label());
+			this->dtGrdUrlCollection = (gcnew System::Windows::Forms::DataGridView());
+			this->URL = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Weight = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdUrlCollection))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// txtBoxNewUrl
 			// 
 			this->txtBoxNewUrl->Location = System::Drawing::Point(12, 25);
 			this->txtBoxNewUrl->Name = L"txtBoxNewUrl";
-			this->txtBoxNewUrl->Size = System::Drawing::Size(485, 20);
+			this->txtBoxNewUrl->Size = System::Drawing::Size(402, 20);
 			this->txtBoxNewUrl->TabIndex = 5;
 			// 
 			// lblNewUrl
@@ -83,29 +97,17 @@ namespace UniversityCandidates {
 			// 
 			// btnAddNewUrl
 			// 
-			this->btnAddNewUrl->Location = System::Drawing::Point(503, 24);
+			this->btnAddNewUrl->Location = System::Drawing::Point(498, 24);
 			this->btnAddNewUrl->Name = L"btnAddNewUrl";
-			this->btnAddNewUrl->Size = System::Drawing::Size(84, 20);
+			this->btnAddNewUrl->Size = System::Drawing::Size(84, 22);
 			this->btnAddNewUrl->TabIndex = 3;
 			this->btnAddNewUrl->Text = L"Add";
 			this->btnAddNewUrl->UseVisualStyleBackColor = true;
 			this->btnAddNewUrl->Click += gcnew System::EventHandler(this, &AddNewUrlForm::btnAddNewUrl_Click);
 			// 
-			// lstBoxUrlCollection
-			// 
-			this->lstBoxUrlCollection->FormattingEnabled = true;
-			this->lstBoxUrlCollection->Items->AddRange(gcnew cli::array< System::Object^  >(1) {
-				L"https://chromium-case-study.s3.us-east-1.amazonaws.com/candidate+feeds/University"
-					L"-of-Havana.json"
-			});
-			this->lstBoxUrlCollection->Location = System::Drawing::Point(12, 51);
-			this->lstBoxUrlCollection->Name = L"lstBoxUrlCollection";
-			this->lstBoxUrlCollection->Size = System::Drawing::Size(575, 225);
-			this->lstBoxUrlCollection->TabIndex = 6;
-			// 
 			// btnRemove
 			// 
-			this->btnRemove->Location = System::Drawing::Point(413, 302);
+			this->btnRemove->Location = System::Drawing::Point(413, 344);
 			this->btnRemove->Name = L"btnRemove";
 			this->btnRemove->Size = System::Drawing::Size(84, 20);
 			this->btnRemove->TabIndex = 7;
@@ -116,7 +118,7 @@ namespace UniversityCandidates {
 			// btnClose
 			// 
 			this->btnClose->DialogResult = System::Windows::Forms::DialogResult::Cancel;
-			this->btnClose->Location = System::Drawing::Point(503, 302);
+			this->btnClose->Location = System::Drawing::Point(503, 344);
 			this->btnClose->Name = L"btnClose";
 			this->btnClose->Size = System::Drawing::Size(84, 20);
 			this->btnClose->TabIndex = 8;
@@ -124,64 +126,126 @@ namespace UniversityCandidates {
 			this->btnClose->UseVisualStyleBackColor = true;
 			this->btnClose->Click += gcnew System::EventHandler(this, &AddNewUrlForm::btnClose_Click);
 			// 
+			// txtBoxWeight
+			// 
+			this->txtBoxWeight->Location = System::Drawing::Point(420, 25);
+			this->txtBoxWeight->Name = L"txtBoxWeight";
+			this->txtBoxWeight->Size = System::Drawing::Size(72, 20);
+			this->txtBoxWeight->TabIndex = 9;
+			// 
+			// lblWeight
+			// 
+			this->lblWeight->AutoSize = true;
+			this->lblWeight->Location = System::Drawing::Point(417, 9);
+			this->lblWeight->Name = L"lblWeight";
+			this->lblWeight->Size = System::Drawing::Size(44, 13);
+			this->lblWeight->TabIndex = 10;
+			this->lblWeight->Text = L"Weight:";
+			// 
+			// dtGrdUrlCollection
+			// 
+			this->dtGrdUrlCollection->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dtGrdUrlCollection->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2)
+			{
+				this->URL,
+					this->Weight
+			});
+			this->dtGrdUrlCollection->Location = System::Drawing::Point(12, 71);
+			this->dtGrdUrlCollection->Name = L"dtGrdUrlCollection";
+			this->dtGrdUrlCollection->Size = System::Drawing::Size(549, 267);
+			this->dtGrdUrlCollection->TabIndex = 11;
+			// 
+			// URL
+			// 
+			this->URL->HeaderText = L"URL";
+			this->URL->MinimumWidth = 450;
+			this->URL->Name = L"URL";
+			this->URL->Width = 450;
+			// 
+			// Weight
+			// 
+			this->Weight->HeaderText = L"Weight";
+			this->Weight->MinimumWidth = 50;
+			this->Weight->Name = L"Weight";
+			this->Weight->Width = 50;
+			// 
 			// AddNewUrlForm
 			// 
 			this->AcceptButton = this->btnAddNewUrl;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->CancelButton = this->btnClose;
-			this->ClientSize = System::Drawing::Size(599, 334);
+			this->ClientSize = System::Drawing::Size(599, 376);
+			this->Controls->Add(this->dtGrdUrlCollection);
+			this->Controls->Add(this->lblWeight);
+			this->Controls->Add(this->txtBoxWeight);
 			this->Controls->Add(this->btnClose);
 			this->Controls->Add(this->btnRemove);
-			this->Controls->Add(this->lstBoxUrlCollection);
 			this->Controls->Add(this->txtBoxNewUrl);
 			this->Controls->Add(this->lblNewUrl);
 			this->Controls->Add(this->btnAddNewUrl);
 			this->Name = L"AddNewUrlForm";
 			this->Text = L"AddNewUrlForm";
 			this->Load += gcnew System::EventHandler(this, &AddNewUrlForm::AddNewUrlForm_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdUrlCollection))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-	private: System::Void btnAddNewUrl_Click(System::Object^ sender, System::EventArgs^ e) {
+    private: System::Void btnAddNewUrl_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+					try {
+						String^ newUrl = txtBoxNewUrl->Text;
+						float weight;
+						if (!float::TryParse(txtBoxWeight->Text, weight)) {
+							MessageBox::Show("Please enter a valid weight", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						if (newUrl->Length == 0) {
+							MessageBox::Show("Please enter a valid URL", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						dtGrdUrlCollection->Rows->Add(newUrl, weight);
+						txtBoxNewUrl->Text = "";
+						txtBoxWeight->Text = "";
+						AddUrl(msclr::interop::marshal_as<std::string>(newUrl), weight);
+					}
+					catch (Exception^ ex) {
+						MessageBox::Show(ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					}
+    }
+	private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^ e)
+	{
 		try {
-			String^ newUrl = txtBoxNewUrl->Text;
-			if (newUrl->Length == 0) {
-				MessageBox::Show("Please enter a valid URL", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			if (dtGrdUrlCollection->SelectedRows->Count == 0) {
+				MessageBox::Show("Please select an item to remove", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
-			lstBoxUrlCollection->Items->Add(newUrl);
-			txtBoxNewUrl->Text = "";
+			std::string url = msclr::interop::marshal_as<std::string>(dtGrdUrlCollection->SelectedRows[0]->Cells[0]->Value->ToString());
+			RemoveUrl(url);
+			dtGrdUrlCollection->Rows->Remove(dtGrdUrlCollection->SelectedRows[0]);
 		}
 		catch (Exception^ ex) {
 			MessageBox::Show(ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
-private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^ e) {
-	try {
-		if (lstBoxUrlCollection->SelectedIndex == -1) {
-			MessageBox::Show("Please select an item to remove", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
-		lstBoxUrlCollection->Items->RemoveAt(lstBoxUrlCollection->SelectedIndex);
-	}
-	catch (Exception^ ex) {
-		MessageBox::Show(ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
-	}
-}
-private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Close();
-}
 
-private: System::Void AddNewUrlForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	std::vector<std::string> urlList;
-	GetUrlList(&urlList);
-	lstBoxUrlCollection->Items->Clear();
-	for (const auto& url : urlList) {
-		lstBoxUrlCollection->Items->Add(gcnew String(url.c_str()));
+	private: System::Void btnClose_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		this->Close();
 	}
-}
-};
+
+	private: System::Void AddNewUrlForm_Load(System::Object^ sender, System::EventArgs^ e)
+	{
+		std::vector<std::string> urlList;
+		std::vector<float> weightList;
+		GetUrlList(&urlList);
+		GetWeightList(&weightList);
+		dtGrdUrlCollection->Rows->Clear();
+		for (size_t i = 0; i < urlList.size(); i++) {
+			dtGrdUrlCollection->Rows->Add(gcnew String(urlList[i].c_str()), weightList[i].ToString());
+		}
+	}
+	};
 }

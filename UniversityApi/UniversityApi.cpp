@@ -5,14 +5,24 @@
 #include "DataSingletonContainer.h"
 
 
-void GetUrlList(std::vector<std::string> * urlList) 
+UNIVERSITYAPI_API void GetUrlList(std::vector<std::string> * urlList)
 {
 	UrlListSingleton::GetInstance()->GetUrlList(urlList);
 }
 
-UNIVERSITYAPI_API void AddUrl(std::string url)
+UNIVERSITYAPI_API void ClearData()
 {
-	UrlListSingleton::GetInstance()->AddUrl(url);
+	DataSingletonContainer::GetInstance()->ClearData();
+}
+
+UNIVERSITYAPI_API void GetWeightList(std::vector<float> * weightList)
+{
+	UrlListSingleton::GetInstance()->GetWeightList(weightList);
+}
+
+UNIVERSITYAPI_API void AddUrl(std::string url, float weight)
+{
+	UrlListSingleton::GetInstance()->AddUrl(url, weight);
 }
 
 UNIVERSITYAPI_API void RemoveUrl(std::string url)
@@ -20,14 +30,14 @@ UNIVERSITYAPI_API void RemoveUrl(std::string url)
 	UrlListSingleton::GetInstance()->RemoveUrl(url);
 }
 
-UNIVERSITYAPI_API bool ReadDataFromUrl(std::string url)
+UNIVERSITYAPI_API bool ReadDataFromUrl(std::string url, float weight)
 {
 	UrlBasedApi api;
-	api.RequestDataFromUrl(url);
+	api.RequestDataFromUrl(url, weight);
 	if (api.DataParser.Data.candidates.size() != 0)
 	{
 		DataSingletonContainer::GetInstance()->AppendData(api.DataParser.Data);
-		DataSingletonContainer::GetInstance()->AddUniversityToList(api.name);
+		DataSingletonContainer::GetInstance()->AddUniversityToList(api.name, api.weight);
 		return true;
 	}
 	return false;
@@ -43,7 +53,7 @@ UNIVERSITYAPI_API void GetSkillList(std::vector<std::string>* skillList)
 	DataSingletonContainer::GetInstance()->GetSkillList(skillList);
 }
 
-UNIVERSITYAPI_API void GetUniversityList(std::vector<std::string>* universityList)
+UNIVERSITYAPI_API void GetUniversityList(std::map<std::string, float>* universityList)
 {
 	DataSingletonContainer::GetInstance()->GetUniversityList(universityList);
 }

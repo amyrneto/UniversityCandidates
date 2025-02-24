@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include "pugixml.hpp"
+#include "UrlListSingleton.h"
 
 void DataParser::ParseJsonData(std::string name, std::string data)
 {
@@ -21,6 +22,8 @@ void DataParser::ParseJsonDataInternal(std::string name, std::string data)
 		Candidate candidate;
 		candidate.name = GetJsonValueOrDefault<std::string>(it.value()["name"], "");
 		candidate.gpa = GetJsonValueOrDefault<float>(it.value()["GPA"], 0.0);
+		float w = UrlListSingleton::GetInstance()->GetWeight(name);
+		candidate.weighted_gpa = candidate.gpa * w;
 		candidate.hobby = GetJsonValueOrDefault<std::string>(it.value()["hobby"], "");
 		candidate.preferred_ide = GetJsonValueOrDefault<std::string>(it.value()["preferred_ide"], "");
 		candidate.certifications = GetJsonValueOrDefault<std::string>(it.value()["certifications"], "");
@@ -67,6 +70,8 @@ void DataParser::ParseXmlDataInternal(std::string name, std::string data)
 		Candidate candidate;
 		candidate.name = item.child("name").child_value();
 		candidate.gpa = item.child("GPA").text().as_float();
+		float w = UrlListSingleton::GetInstance()->GetWeight(name);
+		candidate.weighted_gpa = candidate.gpa * w;
 		candidate.hobby = item.child("hobby").child_value();
 		candidate.preferred_ide = item.child("preferred_ide").child_value();
 		candidate.certifications = item.child("certifications").child_value();

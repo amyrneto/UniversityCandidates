@@ -1,16 +1,18 @@
 #pragma once
 #include "ExportedTypes.h"
+#include <map>
 
 class DataSingletonContainer
 {
 public:
 	static DataSingletonContainer* GetInstance();
 	void SetData(const RootData& data);
+	void ClearData();
 	void GetData(RootData& data);
 	void AppendData(const RootData& data);
 	void GetSkillList(std::vector<std::string>* skillList);
-	void GetUniversityList(std::vector<std::string>* skillList);
-	void AddUniversityToList(std::string newUniversity);
+	void GetUniversityList(std::map<std::string, float>* universityList);
+	void AddUniversityToList(std::string newUniversity, float weight);
 
 protected:
 	DataSingletonContainer();
@@ -19,6 +21,6 @@ protected:
 	static DataSingletonContainer* instance;
 	RootData data;
 	std::vector<std::string> skillList;
-	std::vector<std::string> universityList;
+	std::map<std::string, float> universityList;
 };
 

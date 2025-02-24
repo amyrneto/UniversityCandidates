@@ -6,6 +6,7 @@ struct Candidate
 {
 	std::string name;
 	float gpa;
+	float weighted_gpa;
 	std::vector<std::string> skills;
 	std::string hobby;
 	std::string preferred_ide;

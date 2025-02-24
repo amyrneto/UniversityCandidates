@@ -20,11 +20,12 @@ UrlBasedApi::~UrlBasedApi()
 	// close connection?	
 }
 
-void UrlBasedApi::RequestDataFromUrl(const std::string& _url)
+void UrlBasedApi::RequestDataFromUrl(const std::string& _url, float _weight)
 {
 	url = _url;
 	auto fileType = url.substr(url.find_last_of(".") + 1);
 	name = GetUrlName(url);
+	weight = _weight;
 
 	RequestData();
 

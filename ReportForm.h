@@ -63,8 +63,14 @@ namespace UniversityCandidates
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Name;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ University;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ GPA;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ WeightedGpa;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ SkillSet;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ MatchingSkills;
+
+
+
+
+
 
 
 
@@ -112,6 +118,7 @@ namespace UniversityCandidates
 			this->Name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->University = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->GPA = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->WeightedGpa = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->SkillSet = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->MatchingSkills = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dtGrdMainReport))->BeginInit();
@@ -122,10 +129,10 @@ namespace UniversityCandidates
 			// dtGrdMainReport
 			// 
 			this->dtGrdMainReport->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dtGrdMainReport->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5)
+			this->dtGrdMainReport->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6)
 			{
 				this->Name,
-					this->University, this->GPA, this->SkillSet, this->MatchingSkills
+					this->University, this->GPA, this->WeightedGpa, this->SkillSet, this->MatchingSkills
 			});
 			this->dtGrdMainReport->Location = System::Drawing::Point(12, 155);
 			this->dtGrdMainReport->Name = L"dtGrdMainReport";
@@ -301,12 +308,19 @@ namespace UniversityCandidates
 			this->GPA->Name = L"GPA";
 			this->GPA->Width = 50;
 			// 
+			// WeightedGpa
+			// 
+			this->WeightedGpa->HeaderText = L"Wg GPA";
+			this->WeightedGpa->MinimumWidth = 50;
+			this->WeightedGpa->Name = L"WeightedGpa";
+			this->WeightedGpa->Width = 50;
+			// 
 			// SkillSet
 			// 
 			this->SkillSet->HeaderText = L"Skill Set";
-			this->SkillSet->MinimumWidth = 200;
+			this->SkillSet->MinimumWidth = 150;
 			this->SkillSet->Name = L"SkillSet";
-			this->SkillSet->Width = 200;
+			this->SkillSet->Width = 150;
 			// 
 			// MatchingSkills
 			// 
@@ -380,10 +394,10 @@ namespace UniversityCandidates
 
 	private: System::Void PopulateUniversityComboBox()
 	{
-		std::vector<std::string> universityList;
+		std::map<std::string, float> universityList;
 		GetUniversityList(&universityList);
 		for (auto it = universityList.begin(); it != universityList.end(); ++it) {
-			cmbBoxUniversityList->Items->Add(gcnew String(it->c_str()));
+			cmbBoxUniversityList->Items->Add(gcnew String(it->first.c_str()));
 		}
 	}
 
@@ -402,6 +416,7 @@ namespace UniversityCandidates
 				gcnew String(data.candidates[i].name.c_str()),
 					gcnew String(data.candidates[i].university.c_str()),
 					gcnew String(std::to_string(data.candidates[i].gpa).c_str()),
+					gcnew String(std::to_string(data.candidates[i].weighted_gpa).c_str()),
 					gcnew String(skillSet.c_str())
 			});
 		}

@@ -259,6 +259,7 @@ namespace UniversityCandidates
 	}
 	private: System::Void btnDownloadData_Click(System::Object^ sender, System::EventArgs^ e)
 	{
+		ClearData();
 		btnDownloadData->Enabled = false;
 		auto task = System::Threading::Tasks::Task::Run(gcnew System::Action(this, &MainWindow::DownloadDataAsync));
 	}
@@ -269,9 +270,15 @@ namespace UniversityCandidates
 			bool error = false;
 
 			std::vector<std::string> urlList;
+			std::vector<float> weightList;
 			GetUrlList(&urlList);
+			if (urlList.size() == 0) {
+				this->Invoke(gcnew System::Action<String^>(this, &MainWindow::ShowError), "No URLs to download!\nEnter DLLs at Config->Remote URLs option.");
+				return;
+			}
+			GetWeightList(&weightList);
 			for (size_t i = 0; i < urlList.size(); i++) {
-				if (!ReadDataFromUrl(urlList[i])) {
+				if (!ReadDataFromUrl(urlList[i], weightList[i])) {
 					error = true;
 				}
 			}
